@@ -95,6 +95,7 @@ db.Exercise.deleteMany({})
     })
     .then(() => {
         db.Workout.deleteMany({})
+            .then(() => console.log("Exercise ids to be added to workout:"))
             .then(() => console.log(exerciseIds))
             .then(() => {
                 return db.Workout.collection.insertMany(
@@ -139,7 +140,6 @@ db.Exercise.deleteMany({})
             })
             .then(data => {
                 console.log(data.result.n + " records inserted!");
-                // console.log(exerciseIds[0]);
                 process.exit(0);
             })
     })
