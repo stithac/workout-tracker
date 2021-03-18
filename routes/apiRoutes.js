@@ -18,6 +18,19 @@ module.exports = function(app) {
         });
      });
 
+     // API route to get the last 7 workouts along with their exercises saved in the db
+    app.get("/api/workouts/range", function(req, res) {
+
+        Workout.find({}).sort({$natural: -1}).limit(7)
+        .populate("exercises")
+        .then(dbResults => {
+            res.json(dbResults);
+        })
+        .catch(err => {
+            res.json(err);
+        });
+     });
+
     // API route to get all exercises saved in the db
     app.get("/api/exercises", function(req, res) {
 

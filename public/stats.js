@@ -22,30 +22,38 @@ function generatePalette() {
 }
 
 function populateChart(data) {
-  let durations = data.map(({ totalDuration }) => totalDuration);
-  let pounds = calculateTotalWeight(data);
-  let workouts = workoutNames(data);
-  const colors = generatePalette();
+    // console.log(data); // Testing
+    const durations = [];
+    data.forEach(workout => {
+        workout.exercises.forEach(exercise => {
+            durations.push(exercise.duration)
+        });
+    });
+    // console.log(durations); // Testing
 
-  let line = document.querySelector('#canvas').getContext('2d');
-  let bar = document.querySelector('#canvas2').getContext('2d');
-  let pie = document.querySelector('#canvas3').getContext('2d');
-  let pie2 = document.querySelector('#canvas4').getContext('2d');
+    let pounds = calculateTotalWeight(data);
+    let workouts = workoutNames(data);
+    const colors = generatePalette();
 
-  const daysOfWeek = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
+    let line = document.querySelector('#canvas').getContext('2d');
+    let bar = document.querySelector('#canvas2').getContext('2d');
+    let pie = document.querySelector('#canvas3').getContext('2d');
+    let pie2 = document.querySelector('#canvas4').getContext('2d');
 
-  const labels = data.map(({ day }) => {
-    const date = new Date(day);
-    return daysOfWeek[date.getDay()];
-  });
+    const daysOfWeek = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+    ];
+
+    const labels = data.map(({ day }) => {
+        const date = new Date(day);
+        return daysOfWeek[date.getDay()];
+    });
 
   let lineChart = new Chart(line, {
     type: 'line',
