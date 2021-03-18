@@ -25,7 +25,7 @@ function generatePalette() {
 }
 
 function populateChart(data) {
-    console.log(data); // Testing
+    // console.log(data); // Testing
     data = data.reverse();// Put db data in data in ascending order
     const exercisesArray = [];
     const workoutDurations = [];
@@ -51,8 +51,10 @@ function populateChart(data) {
     durations = exercisesArray.map(exercise => exercise.duration);
     // console.log(durations) // Testing
 
-    let pounds = calculateTotalWeight(data);
+    let pounds = calcPoundsByDay(data);
+    let combinedPounds = calcTotalPounds(data);
     let workouts = workoutNames(data);
+    let names = resistanceNames(data);
     const colors = generatePalette();
 
     let line = document.querySelector('#canvas').getContext('2d');
@@ -184,12 +186,12 @@ function populateChart(data) {
   let donutChart = new Chart(pie2, {
     type: 'doughnut',
     data: {
-      labels: resistanceWorkouts,
+      labels: names,
       datasets: [
         {
           label: 'Exercises Performed',
           backgroundColor: colors,
-          data: poundsLifted,
+          data: combinedPounds,
         },
       ],
     },
@@ -202,41 +204,61 @@ function populateChart(data) {
   });
 }
 
-function calculateTotalWeight(data) {
+function getWeightTotals(data) {
+    let exercisesArray = [];
+    let workoutWeights = [];
 
-    let totals = [];
     data.forEach((workout) => {
-        const workoutTotal = workout.exercises.reduce((total, { type, weight }) => {
-            if (type === 'resistance') {
-                workout.exercises.forEach(exercise => {
-                        if(poundsLifted.some(e => e.name === exercise.name)){
-                            const name = exercise.name;
-                            // console.log(name); // Testing
-                            const index = poundsLifted.findIndex(x => x.name == name);
-                            // console.log(index); // Testing
+        workout.exercises.forEach(exercise => {
+            if (exercise.weight >= 0) {
+                workoutWeights.push(exercise.weight);
 
-                            poundsLifted[index].weight += exercise.weight;
-                        } else{
-                            poundsLifted.push({name: exercise.name, weight:exercise.weight});
-                        }
-                });
-
-                return total + weight;
+                if(exercisesArray.some(e => e.name === exercise.name)){
+                    const name = exercise.name;
+                    // console.log(name); // Testing
+                    const index = exercisesArray.findIndex(x => x.name == name);
+                    // console.log(index); // Testing
+                    exercisesArray[index].weight += exercise.weight;
+                } else{
+                    exercisesArray.push({name: exercise.name, weight:exercise.weight});
+                }
             }
-        }, 0);
+        });
+    })
 
-        totals.push(workoutTotal);
-    });
+    console.log(workoutWeights); // Testing
 
-    console.log(poundsLifted); // Testing
-    const filteredArray = poundsLifted.filter(exercise => exercise.weight >= 0);
-    resistanceWorkouts = filteredArray.map(exercise => exercise.name);
-    poundsLifted = filteredArray.map(exercise => exercise.weight);
+    console.log(exercisesArray); // Testing
+    const weights = {pounds: workoutWeights, combinedPounds: exercisesArray};
 
-    console.log(poundsLifted); // Testing
-    console.log(resistanceWorkouts); // Testing
+    return weights;
+}
 
-    return totals;
+function calcPoundsByDay(data){
+
+    const weight = getWeightTotals(data);
+    return weight.pounds;
+
+}
+
+function calcTotalPounds(data){
+
+    const weight = getWeightTotals(data);
+    // console.log(weight); // Testing
+
+    const totalWeight = weight.combinedPounds.map(exercise => exercise.weight);
+    return totalWeight;
+}
+
+function resistanceNames(data){
+    const weight = getWeightTotals(data);
+    console.log(weight); // Testing
+
+    const names = weight.combinedPounds.map(exercise => exercise.name);
+    console.log(names); // Testing
+
+    return names;
+
 }
 
 function workoutNames(data) {
