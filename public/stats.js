@@ -1,3 +1,6 @@
+var poundsLifted = [];
+var resistanceWorkouts;
+
 function generatePalette() {
   const arr = [
     '#003f5c',
@@ -23,9 +26,13 @@ function generatePalette() {
 
 function populateChart(data) {
     console.log(data); // Testing
+    data = data.reverse();// Put db data in data in ascending order
     const exercisesArray = [];
+    const workoutDurations = [];
     data.forEach(workout => {
         workout.exercises.forEach(exercise => {
+            workoutDurations.push(exercise.duration);
+
             if(exercisesArray.some(e => e.name === exercise.name)){
                 const name = exercise.name;
                 // console.log(name); // Testing
@@ -40,14 +47,12 @@ function populateChart(data) {
     });
 
     console.log(exercisesArray); // Testing
-
+    console.log(workoutDurations); // Testing
     durations = exercisesArray.map(exercise => exercise.duration);
-
-    console.log(durations) // Testing
+    // console.log(durations) // Testing
 
     let pounds = calculateTotalWeight(data);
     let workouts = workoutNames(data);
-    console.log(workouts);
     const colors = generatePalette();
 
     let line = document.querySelector('#canvas').getContext('2d');
@@ -67,7 +72,8 @@ function populateChart(data) {
 
     const labels = data.map(({ day }) => {
         const date = new Date(day);
-        return daysOfWeek[date.getDay()];
+
+        return daysOfWeek[date.getDay() ];
     });
 
   let lineChart = new Chart(line, {
@@ -79,7 +85,7 @@ function populateChart(data) {
           label: 'Workout Duration In Minutes',
           backgroundColor: 'red',
           borderColor: 'red',
-          data: durations,
+          data: workoutDurations,
           fill: false,
         },
       ],
@@ -170,7 +176,7 @@ function populateChart(data) {
     options: {
       title: {
         display: true,
-        text: 'Exercises Performed',
+        text: 'Exercises Performed (by duration)',
       },
     },
   });
@@ -178,40 +184,59 @@ function populateChart(data) {
   let donutChart = new Chart(pie2, {
     type: 'doughnut',
     data: {
-      labels: workouts,
+      labels: resistanceWorkouts,
       datasets: [
         {
           label: 'Exercises Performed',
           backgroundColor: colors,
-          data: pounds,
+          data: poundsLifted,
         },
       ],
     },
     options: {
       title: {
         display: true,
-        text: 'Exercises Performed',
+        text: 'Resistance Exercises Performed (by weight)',
       },
     },
   });
 }
 
 function calculateTotalWeight(data) {
-  let totals = [];
 
-  data.forEach((workout) => {
-    const workoutTotal = workout.exercises.reduce((total, { type, weight }) => {
-      if (type === 'resistance') {
-        return total + weight;
-      } else {
-        return total;
-      }
-    }, 0);
+    let totals = [];
+    data.forEach((workout) => {
+        const workoutTotal = workout.exercises.reduce((total, { type, weight }) => {
+            if (type === 'resistance') {
+                workout.exercises.forEach(exercise => {
+                        if(poundsLifted.some(e => e.name === exercise.name)){
+                            const name = exercise.name;
+                            // console.log(name); // Testing
+                            const index = poundsLifted.findIndex(x => x.name == name);
+                            // console.log(index); // Testing
 
-    totals.push(workoutTotal);
-  });
+                            poundsLifted[index].weight += exercise.weight;
+                        } else{
+                            poundsLifted.push({name: exercise.name, weight:exercise.weight});
+                        }
+                });
 
-  return totals;
+                return total + weight;
+            }
+        }, 0);
+
+        totals.push(workoutTotal);
+    });
+
+    console.log(poundsLifted); // Testing
+    const filteredArray = poundsLifted.filter(exercise => exercise.weight >= 0);
+    resistanceWorkouts = filteredArray.map(exercise => exercise.name);
+    poundsLifted = filteredArray.map(exercise => exercise.weight);
+
+    console.log(poundsLifted); // Testing
+    console.log(resistanceWorkouts); // Testing
+
+    return totals;
 }
 
 function workoutNames(data) {
