@@ -19,7 +19,7 @@ module.exports = function(app) {
      });
 
     // API route to get all exercises saved in the db
-    app.get("/api/exercises/", function(req, res) {
+    app.get("/api/exercises", function(req, res) {
 
        Exercise.find({})
         .then(dbResults => {
@@ -47,14 +47,16 @@ module.exports = function(app) {
     });
 
     // API route to create a new workout
-    app.post("/api/workouts/", function(req, res) {
-        Workout.find({})
+    app.post("/api/workouts", function(req, res) {
+
+        Workout.create({})
         .then(dbResults => {
             res.json(dbResults);
         })
         .catch(err => {
         res.status(400).json(err);
         });
+
     });
 
   };
