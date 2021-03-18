@@ -22,17 +22,32 @@ function generatePalette() {
 }
 
 function populateChart(data) {
-    // console.log(data); // Testing
-    const durations = [];
+    console.log(data); // Testing
+    const exercisesArray = [];
     data.forEach(workout => {
         workout.exercises.forEach(exercise => {
-            durations.push(exercise.duration)
+            if(exercisesArray.some(e => e.name === exercise.name)){
+                const name = exercise.name;
+                // console.log(name); // Testing
+                const index = exercisesArray.findIndex(x => x.name == name);
+                // console.log(index); // Testing
+
+                exercisesArray[index].duration += exercise.duration;
+            } else{
+                exercisesArray.push({name: exercise.name, duration:exercise.duration});
+            }
         });
     });
-    // console.log(durations); // Testing
+
+    console.log(exercisesArray); // Testing
+
+    durations = exercisesArray.map(exercise => exercise.duration);
+
+    console.log(durations) // Testing
 
     let pounds = calculateTotalWeight(data);
     let workouts = workoutNames(data);
+    console.log(workouts);
     const colors = generatePalette();
 
     let line = document.querySelector('#canvas').getContext('2d');
