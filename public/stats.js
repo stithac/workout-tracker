@@ -25,13 +25,19 @@ function generatePalette() {
 }
 
 function populateChart(data) {
-    // console.log(data); // Testing
-    data = data.reverse();// Put db data in data in ascending order
+    console.log("Last 7 workouts:", data);
+    data = data.reverse();// Put db data in ascending order
     const exercisesArray = [];
     const workoutDurations = [];
     data.forEach(workout => {
+        let x = 0;
+
+        for (i = 0; i < workout.exercises.length; i++){
+            x += parseInt(workout.exercises[i].duration);
+        }
+        workoutDurations.push(x);
+
         workout.exercises.forEach(exercise => {
-            workoutDurations.push(exercise.duration);
 
             if(exercisesArray.some(e => e.name === exercise.name)){
                 const name = exercise.name;
@@ -46,10 +52,10 @@ function populateChart(data) {
         });
     });
 
-    console.log(exercisesArray); // Testing
-    console.log(workoutDurations); // Testing
+    console.log("Total duration for each exercise type from the past seven workouts:", exercisesArray);
+    console.log("Total duration of each workout from the past seven workouts:", workoutDurations);
+
     durations = exercisesArray.map(exercise => exercise.duration);
-    // console.log(durations) // Testing
 
     let pounds = calcPoundsByDay(data);
     let combinedPounds = calcTotalPounds(data);
@@ -84,7 +90,7 @@ function populateChart(data) {
       labels,
       datasets: [
         {
-          label: 'Workout Duration In Minutes',
+          label: 'Workout Duration (minutes)',
           backgroundColor: 'red',
           borderColor: 'red',
           data: workoutDurations,
@@ -149,7 +155,7 @@ function populateChart(data) {
     options: {
       title: {
         display: true,
-        text: 'Pounds Lifted',
+        text: 'Resistance Exercises Weight Lifted (lbs)',
       },
       scales: {
         yAxes: [
@@ -178,7 +184,7 @@ function populateChart(data) {
     options: {
       title: {
         display: true,
-        text: 'Exercises Performed (by duration)',
+        text: 'All exercises Performed (by duration (minutes))',
       },
     },
   });
@@ -198,7 +204,7 @@ function populateChart(data) {
     options: {
       title: {
         display: true,
-        text: 'Resistance Exercises Performed (by weight)',
+        text: 'Resistance Exercises Performed (by weight (lbs))',
       },
     },
   });
@@ -226,9 +232,8 @@ function getWeightTotals(data) {
         });
     })
 
-    console.log(workoutWeights); // Testing
-
-    console.log(exercisesArray); // Testing
+    // console.log(workoutWeights); // Testing
+    // console.log(exercisesArray); // Testing
     const weights = {pounds: workoutWeights, combinedPounds: exercisesArray};
 
     return weights;
@@ -252,10 +257,10 @@ function calcTotalPounds(data){
 
 function resistanceNames(data){
     const weight = getWeightTotals(data);
-    console.log(weight); // Testing
+    // console.log(weight); // Testing
 
     const names = weight.combinedPounds.map(exercise => exercise.name);
-    console.log(names); // Testing
+    // console.log(names); // Testing
 
     return names;
 
