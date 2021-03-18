@@ -102,39 +102,39 @@ db.Exercise.deleteMany({})
                     [
                         {
                             day: new Date().setDate(new Date().getDate() - 10),
-                            exercises: exerciseIds[0]
+                            exercises: [exerciseIds[0]]
                         },
                         {
                             day: new Date().setDate(new Date().getDate() - 9),
-                            exercises: exerciseIds[1]
+                            exercises: [exerciseIds[1]]
                         },
                         {
                             day: new Date().setDate(new Date().getDate() - 8),
-                            exercises: exerciseIds[2]
+                            exercises: [exerciseIds[2]]
                         },
                         {
                             day: new Date().setDate(new Date().getDate() - 7),
-                            exercises: exerciseIds[3]
+                            exercises: [exerciseIds[3]]
                         },
                         {
                             day: new Date().setDate(new Date().getDate() - 6),
-                            exercises: exerciseIds[4]
+                            exercises: [exerciseIds[4]]
                         },
                         {
                             day: new Date().setDate(new Date().getDate() - 5),
-                            exercises: exerciseIds[5]
+                            exercises: [exerciseIds[5]]
                         },
                         {
                             day: new Date(new Date().setDate(new Date().getDate() - 4)),
-                            exercises: exerciseIds[6]
+                            exercises: [exerciseIds[6]]
                         },
                         {
                             day: new Date(new Date().setDate(new Date().getDate() - 3)),
-                            exercises: exerciseIds[7]
+                            exercises: [exerciseIds[7]]
                         },
                         {
                             day: new Date(new Date().setDate(new Date().getDate() - 2)),
-                            exercises: exerciseIds[8]
+                            exercises: [exerciseIds[8]]
                         }
                     ]);
             })

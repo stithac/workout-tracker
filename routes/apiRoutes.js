@@ -10,15 +10,15 @@ module.exports = function(app) {
 
         Workout.find({})
         .populate("exercises")
-        .then(dbLibrary => {
-            res.json(dbLibrary);
+        .then(dbResults => {
+            res.json(dbResults);
         })
         .catch(err => {
             res.json(err);
         });
      });
 
-    // API route to get all workouts saved in the db
+    // API route to get all exercises saved in the db
     app.get("/api/exercises/", function(req, res) {
 
        Exercise.find({})
@@ -30,7 +30,21 @@ module.exports = function(app) {
         });
     });
 
+    // API route to post new exercise to workout
+    app.put("/api/workouts/:id", function(req, res) {
+        const workoutId = req.params.id;
 
+        Exercise.create(req.body)
+
+        .then((results) =>
+            Workout.findOneAndUpdate({_id: workoutId}, { $push: { exercises: results._id }}, { new : true }))
+        .then(dbResults => {
+            res.json(dbResults);
+        })
+        .catch(err => {
+            res.json(err);
+        });
+    });
 
     // API route to create a new workout
     app.post("/api/workouts/", function(req, res) {
