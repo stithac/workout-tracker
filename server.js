@@ -13,10 +13,17 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
+
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
   useFindAndModify: false
+})
+.then(() => {
+  console.log("Connected to Mongo database!");
+})
+.catch(err => {
+  console.error("App starting error:", err.stack);
 });
 
 // routes
