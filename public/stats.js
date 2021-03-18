@@ -25,7 +25,7 @@ function generatePalette() {
 }
 
 function populateChart(data) {
-    console.log("Last 7 workouts:", data);
+    console.log("Last 7 workouts (ascending order):", data);
     data = data.reverse();// Put db data in ascending order
     const exercisesArray = [];
     const workoutDurations = [];
@@ -52,7 +52,7 @@ function populateChart(data) {
         });
     });
 
-    console.log("Total duration for each exercise type from the past seven workouts:", exercisesArray);
+    console.log("Combined duration for each exercise type from the past seven workouts:", exercisesArray);
     console.log("Total duration of each workout from the past seven workouts:", workoutDurations);
 
     durations = exercisesArray.map(exercise => exercise.duration);
@@ -90,11 +90,10 @@ function populateChart(data) {
       labels,
       datasets: [
         {
-          label: 'Workout Duration (minutes)',
-          backgroundColor: 'red',
-          borderColor: 'red',
+          label: 'Minutes by Day',
+          backgroundColor: colors,
           data: workoutDurations,
-          fill: false,
+          fill:false,
         },
       ],
     },
@@ -102,6 +101,7 @@ function populateChart(data) {
       responsive: true,
       title: {
         display: true,
+        text: 'Total Duration of Each Workout (minutes)',
       },
       scales: {
         xAxes: [
@@ -130,24 +130,10 @@ function populateChart(data) {
       labels,
       datasets: [
         {
-          label: 'Pounds',
+          label: 'Pounds by Day',
           data: pounds,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-          ],
+          backgroundColor: colors,
+          borderColor: colors,
           borderWidth: 1,
         },
       ],
@@ -184,7 +170,7 @@ function populateChart(data) {
     options: {
       title: {
         display: true,
-        text: 'All exercises Performed (by duration (minutes))',
+        text: 'All Exercises Performed (By Duration (minutes))',
       },
     },
   });
@@ -204,7 +190,7 @@ function populateChart(data) {
     options: {
       title: {
         display: true,
-        text: 'Resistance Exercises Performed (by weight (lbs))',
+        text: 'Resistance Exercises Performed (By Weight (lbs))',
       },
     },
   });
@@ -218,7 +204,6 @@ function getWeightTotals(data) {
         workout.exercises.forEach(exercise => {
             if (exercise.weight >= 0) {
                 workoutWeights.push(exercise.weight);
-
                 if(exercisesArray.some(e => e.name === exercise.name)){
                     const name = exercise.name;
                     // console.log(name); // Testing
@@ -228,12 +213,11 @@ function getWeightTotals(data) {
                 } else{
                     exercisesArray.push({name: exercise.name, weight:exercise.weight});
                 }
+            } else {
+                workoutWeights.push(0);
             }
         });
     })
-
-    // console.log(workoutWeights); // Testing
-    // console.log(exercisesArray); // Testing
     const weights = {pounds: workoutWeights, combinedPounds: exercisesArray};
 
     return weights;
@@ -242,6 +226,7 @@ function getWeightTotals(data) {
 function calcPoundsByDay(data){
 
     const weight = getWeightTotals(data);
+    console.log("Pounds by Day: ", weight.pounds);
     return weight.pounds;
 
 }
@@ -249,7 +234,6 @@ function calcPoundsByDay(data){
 function calcTotalPounds(data){
 
     const weight = getWeightTotals(data);
-    // console.log(weight); // Testing
 
     const totalWeight = weight.combinedPounds.map(exercise => exercise.weight);
     return totalWeight;
@@ -257,13 +241,10 @@ function calcTotalPounds(data){
 
 function resistanceNames(data){
     const weight = getWeightTotals(data);
-    // console.log(weight); // Testing
 
     const names = weight.combinedPounds.map(exercise => exercise.name);
-    // console.log(names); // Testing
 
     return names;
-
 }
 
 function workoutNames(data) {
