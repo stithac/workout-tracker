@@ -203,7 +203,11 @@ function getWeightTotals(data) {
     data.forEach((workout) => {
         workout.exercises.forEach(exercise => {
             if (exercise.weight >= 0) {
-                workoutWeights.push(exercise.weight);
+                if (workoutWeights.length >= 7){
+                    workoutWeights[6] += parseInt(exercise.weight);
+                } else {
+                    workoutWeights.push(exercise.weight);
+                }
                 if(exercisesArray.some(e => e.name === exercise.name)){
                     const name = exercise.name;
                     // console.log(name); // Testing
@@ -214,12 +218,14 @@ function getWeightTotals(data) {
                     exercisesArray.push({name: exercise.name, weight:exercise.weight});
                 }
             } else {
-                workoutWeights.push(0);
+                if(workoutWeights.length < 7){
+                    workoutWeights.push(0);
+                }
             }
         });
     })
     const weights = {pounds: workoutWeights, combinedPounds: exercisesArray};
-
+    console.log(weights);
     return weights;
 }
 

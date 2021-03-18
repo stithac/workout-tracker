@@ -1,14 +1,13 @@
 // api-routes.js - this file offers a set of routes for displaying and saving data to the db
 
 // Dependencies
-const Workout = require("../models/Workout");
-const Exercise = require("../models/Exercise");
+const db = require("../models");
 
 module.exports = function(app) {
     // API route to get all workouts along with their exercises saved in the db
     app.get("/api/workouts", function(req, res) {
 
-        Workout.find({})
+        db.Workout.find({})
         .populate("exercises")
         .then(dbResults => {
             res.json(dbResults);
@@ -21,7 +20,7 @@ module.exports = function(app) {
      // API route to get the last 7 workouts along with their exercises saved in the db
     app.get("/api/workouts/range", function(req, res) {
 
-        Workout.find({}).sort({$natural: -1}).limit(7)
+        db.Workout.find({}).sort({$natural: -1}).limit(7)
         .populate("exercises")
         .then(dbResults => {
             res.json(dbResults);
@@ -34,7 +33,7 @@ module.exports = function(app) {
     // API route to get all exercises saved in the db
     app.get("/api/exercises", function(req, res) {
 
-       Exercise.find({})
+       db.Exercise.find({})
         .then(dbResults => {
             res.json(dbResults);
         })
@@ -47,10 +46,10 @@ module.exports = function(app) {
     app.put("/api/workouts/:id", function(req, res) {
         const workoutId = req.params.id;
 
-        Exercise.create(req.body)
+        db.Exercise.create(req.body)
 
         .then((results) =>
-            Workout.findOneAndUpdate({_id: workoutId}, { $push: { exercises: results._id }}, { new : true }))
+            db.Workout.findOneAndUpdate({_id: workoutId}, { $push: { exercises: results._id }}, { new : true }))
         .then(dbResults => {
             res.json(dbResults);
         })
@@ -62,7 +61,7 @@ module.exports = function(app) {
     // API route to create a new workout
     app.post("/api/workouts", function(req, res) {
 
-        Workout.create({})
+        db.Workout.create({})
         .then(dbResults => {
             res.json(dbResults);
         })
