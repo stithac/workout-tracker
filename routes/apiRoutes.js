@@ -1,8 +1,8 @@
 // api-routes.js - this file offers a set of routes for displaying and saving data to the db
 
 // Dependencies
-const Workout = require("../models/Workout.js");
-const Exercise = require("../models/Exercise.js");
+const Workout = require("../models/Workout");
+const Exercise = require("../models/Exercise");
 
 module.exports = function(app) {
     // API route to get all workouts along with their exercises saved in the db
