@@ -22,6 +22,15 @@ A "stats" dashboard is included with 4 charts:
 ## Features
 The application utilizes a Mongo database with Mongoose schema.  It handles routes with Express.  The application is deployed with Heroku and MongoDB Atlas.
 
+## Models
+The application includes two models: exercise.js and workout.js.  An index.js file contains an object that includes all models.  All models are stored in the models folder.
+
+The information for each exercise is stored in the exercise collection.
+![Exercise Collection](./public/img/exercise-collection-screenshot.PNG)
+
+The workout collection includes the ObjectIds for each of the exercises that are included in the workout.
+![Workout Collection](./public/img/workout-collection-screenshot.PNG)
+
 ## Site Images
 ### Homepage
 The homepage displays the information for the last workout.  The user is able to add an exercise to the workout or create a new workout
