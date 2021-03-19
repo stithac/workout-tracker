@@ -27,6 +27,16 @@ The application utilizes a Mongo database with Mongoose schema.  It handles rout
 The homepage displays the information for the last workout.  The user is able to add an exercise to the workout or create a new workout
 ![Site Homepage](./public/img/homepage-screenshot.PNG)
 
+### Workout Form
+The following form displays when a user clicks the New Workout button from the home page.  The Exercise Type is required before the Exercise form displays
+![Workout Form](./public/img/new-workout-screenshot.PNG)
+
+### Exercise Form
+Depending on if the Exercise Type selected is Resistance/Cardio, one of the views of the Exercise form will be displayed
+![Resistance Form](./public/img/resistance-screenshot.PNG)
+
+![Cardio Form](./public/img/cardio-screenshot.PNG)
+
 ### Dashboard
 The dashboard displays data for the last seven workouts
 ![Dashboard](./public/img/dashboard-screenshot.PNG)
@@ -55,7 +65,9 @@ npm i
 ```
 
 ## Known Bugs
-Site has no known bugs
+* Pressing the "Complete" button after adding a new exercise will create a blank workout in the database. This will be resolved in a future release
+
+* Users are able to create multiple workouts for the same day.  Not necessarily a bug, but something to keep in mind.  If done, there will be duplicate day entries in the bar chart
 
 ## Technologies Used
 * node.js
@@ -64,7 +76,7 @@ Site has no known bugs
 * Express
 
 ## Contribution Guidelines
-Direct link to repository: https://github.com/stithac/burger
+Direct link to repository: https://github.com/stithac/workout-tracker
 
 ## Deployment
 The site is deployed to heroku: https://arcane-everglades-17005.herokuapp.com/
