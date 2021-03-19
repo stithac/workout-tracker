@@ -23,7 +23,13 @@ A "stats" dashboard is included with 4 charts:
 The application utilizes a Mongo database with Mongoose schema.  It handles routes with Express.  The application is deployed with Heroku and MongoDB Atlas.
 
 ## Site Images
+### Homepage
+The homepage displays the information for the last workout.  The user is able to add an exercise to the workout or create a new workout
 ![Site Homepage](./public/img/homepage-screenshot.PNG)
+
+### Dashboard
+The dashboard displays data for the last seven workouts
+![Dashboard](./public/img/dashboard-screenshot.PNG)
 
 ## Dependencies
 The application includes the following dependencies:
