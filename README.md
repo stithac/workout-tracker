@@ -58,8 +58,14 @@ npm start
 ```
 
 ## Installation
-* Create a `.gitignore` file and include `node_modules/` and `.DS_Store/`
-* Install npm dependencies using the following command:
+* Install node.js to computer, if not already present.
+
+    * Node.js can be installed from [here](https://nodejs.org/en/).
+
+* Copy all the application files locally to one's machine.
+
+* In a terminal window where you copied the files, install all dependencies. These installations are accomplished by performing the following command:
+
 ```bash
 npm i
 ```
@@ -74,6 +80,9 @@ npm i
 * MongoDb
 * Mongoose
 * Express
+
+## Contributor
+Please email [Ashley Stith](mailto:ashleyc.stith@gmail.com) with questions or for additional inforamtion.
 
 ## Contribution Guidelines
 Direct link to repository: https://github.com/stithac/workout-tracker
