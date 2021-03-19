@@ -1,3 +1,5 @@
+// Note: The seed file was changed from the starter code to allow for a separate Exercise collection.  As a result, the exercises are added before the workouts are added with references to the exercises
+
 // Dependencies
 let mongoose = require("mongoose");
 let db = require("../models");
@@ -6,11 +8,13 @@ let db = require("../models");
 let exercises = [];
 let exerciseIds = [];
 
+// Mongo connection
 mongoose.connect("mongodb://localhost/workout", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
 
+// Exercises are first created
 let exerciseSeed = [
     {
         type: "resistance",
@@ -84,6 +88,7 @@ let exerciseSeed = [
     }
 ]
 
+// The Exercise collection deletes everything and then adds the exerciseSeed.  Once created, the Workout collection is cleared and the workout objects are created with references to the Exercises
 db.Exercise.deleteMany({})
     .then(() => db.Exercise.collection.insertMany(exerciseSeed))
     .then(data => {

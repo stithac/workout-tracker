@@ -1,3 +1,4 @@
+// If the workout id is not in the URL, API.getLastWorkout is called
 init();
 
 async function init() {

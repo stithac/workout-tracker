@@ -80,7 +80,7 @@ npm i
 ```
 
 ## Known Bugs
-* Pressing the "Complete" button after adding a new exercise will create a blank workout in the database. This will be resolved in a future release
+* Pressing the "Complete" button after adding a new exercise will create a blank workout in the database if the form fields are left blank. This will be resolved in a future release
 
 * Users are able to create multiple workouts for the same day.  Not necessarily a bug, but something to keep in mind.  If done, there will be duplicate day entries in the bar chart
 

@@ -1,3 +1,4 @@
+// Global variables
 const workoutTypeSelect = document.querySelector("#type");
 const cardioForm = document.querySelector(".cardio-form");
 const resistanceForm = document.querySelector(".resistance-form");
@@ -17,6 +18,8 @@ const newWorkout = document.querySelector(".new-workout")
 let workoutType = null;
 let shouldNavigateAway = false;
 
+/* initExercise():
+The id of the workout is included in the URL of the page.  If undefined, the API.createWorkout() function is called. Otherwise, the workout ID is included in the URL */
 async function initExercise() {
   let workout;
 
@@ -27,11 +30,11 @@ async function initExercise() {
   if (workout) {
     location.search = "?id=" + workout._id;
   }
-
 }
-
-initExercise();
-
+initExercise(); // Calls initExercise() function on form load
+/* handleWorkoutTypeChange
+Takes in the event that triggered the call.  Hides/displays form fields based on the workoutType. Finally, calls validateInputs()
+ */
 function handleWorkoutTypeChange(event) {
   workoutType = event.target.value;
 
@@ -48,7 +51,9 @@ function handleWorkoutTypeChange(event) {
 
   validateInputs();
 }
-
+/* validateInputs():
+Checks to make sure all fields have been filled out.  The buttons are disabled unless all fields are not blank
+ */
 function validateInputs() {
   let isValid = true;
 
@@ -94,7 +99,8 @@ function validateInputs() {
     addButton.setAttribute("disabled", true);
   }
 }
-
+/* handleFormSubmit
+Takes in an event.  Based on the workoutType, the appropriate fields are added to a workoutData object.  The object is passed to the API.addExercise function before the form fields are cleared and a Success message displayed */
 async function handleFormSubmit(event) {
   event.preventDefault();
 
@@ -118,14 +124,14 @@ async function handleFormSubmit(event) {
   clearInputs();
   toast.classList.add("success");
 }
-
+// Handles Toast Animation End
 function handleToastAnimationEnd() {
   toast.removeAttribute("class");
   if (shouldNavigateAway) {
     location.href = "/";
   }
 }
-
+// Clears all form inputs
 function clearInputs() {
   cardioNameInput.value = "";
   nameInput.value = "";
@@ -136,10 +142,11 @@ function clearInputs() {
   resistanceDurationInput.value = "";
   weightInput.value = "";
 }
-
+// Adds an event listener to the workoutTypeSelect on change.  Then calls handleWorkoutTypeChange
 if (workoutTypeSelect) {
   workoutTypeSelect.addEventListener("change", handleWorkoutTypeChange);
 }
+// Adds an event listener to the complete button on click to navigate away from the page and then call the handleFormSubmit function.
 if (completeButton) {
   completeButton.addEventListener("click", function (event) {
     shouldNavigateAway = true;
@@ -147,11 +154,12 @@ if (completeButton) {
     handleFormSubmit(event);
   });
 }
+// Adds an event listener to the addButton on click.  Then calls handleFormSubmit
 if (addButton) {
   addButton.addEventListener("click", handleFormSubmit);
 }
-toast.addEventListener("animationend", handleToastAnimationEnd);
-
+toast.addEventListener("animationend", handleToastAnimationEnd); // Adds event listener to the toast element
+// Adds input event listener to all inputs on the page
 document
   .querySelectorAll("input")
   .forEach(element => element.addEventListener("input", validateInputs));

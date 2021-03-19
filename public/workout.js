@@ -1,3 +1,4 @@
+// Calls API.getLastWorkout and consoles the data.  The id of the lastWorkout is then appended to the URL
 async function initWorkout() {
   const lastWorkout = await API.getLastWorkout();
   console.log("Last workout:", lastWorkout);
@@ -19,6 +20,7 @@ async function initWorkout() {
   }
 }
 
+// Calculates the total duration for each exercise (resistance and cardio)
 function calcTotalDuration (exerciseArray) {
     var totalDuration = 0;
 
@@ -29,6 +31,7 @@ function calcTotalDuration (exerciseArray) {
     return totalDuration;
 }
 
+// Update "workout-stats" fields based on the exercise type
 function tallyExercises(exercises) {
   const tallied = exercises.reduce((acc, curr) => {
     if (curr.type === "resistance") {

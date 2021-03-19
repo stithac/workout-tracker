@@ -17,7 +17,7 @@ module.exports = function(app) {
         });
      });
 
-     // API route to get the last 7 workouts along with their exercises saved in the db
+     // API route to get the last 7 workouts along with their exercises saved in the db.  All workouts brought in, then exercises populated based on ObjectIds.
     app.get("/api/workouts/range", function(req, res) {
 
         db.Workout.find({}).sort({$natural: -1}).limit(7)
@@ -42,7 +42,7 @@ module.exports = function(app) {
         });
     });
 
-    // API route to post new exercise to workout
+    // API route to post new exercise to workout.  WorkoutId is passed in as parameter. After exercise created, it's objectId is added to the workout (with workoutId)
     app.put("/api/workouts/:id", function(req, res) {
         const workoutId = req.params.id;
 
